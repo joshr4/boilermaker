@@ -47,9 +47,7 @@ tstat.updateCh = () => {
       adc
         .ch1() //get dial
         .then(dialData => {
-          console.log('dial ',dialData)
           tstat.dial = convertDial(dialData);
-          console.log('dialconv ',tstat.dial)
         })
         .catch(err => {
           throw err;
