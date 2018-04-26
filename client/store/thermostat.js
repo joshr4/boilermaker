@@ -4,28 +4,28 @@ import history from '../history'
 /**
  * ACTION TYPES
  */
-const GET_USER = 'GET_USER'
-const REMOVE_USER = 'REMOVE_USER'
+const GET_TSTAT = 'GET_TSTAT'
+const UPDATE_SCHEDULE = 'UPDATE_SCHEDULE'
 
 /**
  * INITIAL STATE
  */
-const defaultUser = {}
+const defaultStat = {}
 
 /**
  * ACTION CREATORS
  */
-const getUser = user => ({type: GET_USER, user})
-const removeUser = () => ({type: REMOVE_USER})
+const getTstat = stat => ({type: GET_TSTAT, stat})
+const putSched = () => ({type: UPDATE_SCHEDULE})
 
 /**
  * THUNK CREATORS
  */
-export const me = () =>
+export const getThermostat = () =>
   dispatch =>
-    axios.get('/auth/me')
+    axios.get('/api/')
       .then(res =>
-        dispatch(getUser(res.data || defaultUser)))
+        dispatch(getTstat(res.data || defaultUser)))
       .catch(err => console.log(err))
 
 export const auth = (email, password, method) =>
@@ -51,10 +51,10 @@ export const logout = () =>
 /**
  * REDUCER
  */
-export default function (state = defaultUser, action) {
+export default function (state = defaultStat, action) {
   switch (action.type) {
-    case GET_USER:
-      return action.user
+    case GET_TSTAT:
+      return action.stat
     case REMOVE_USER:
       return defaultUser
     default:
