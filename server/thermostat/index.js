@@ -17,13 +17,13 @@ const tstat = {
   occSetpoint: 70,
   unoccSetpoint: 50,
   schedule: {
-    1: {},
-    2: {},
-    3: {},
-    4: {},
-    5: {},
-    6: {},
-    7: {},
+    1: [],
+    2: [],
+    3: [],
+    4: [[moment({ hour: 14, minute: 0 }), moment({ hour: 15, minute: 20 })],[moment({ hour: 15, minute: 15 }), moment({ hour: 15, minute: 55 })]],
+    5: [],
+    6: [],
+    7: [],
   },
   temp: 73, //initial
   dial: 74.7, //initial
@@ -46,36 +46,23 @@ tstat.updateCh = () => {
 };
 
 const scheduler = () => {
-  //console.log('Occupied')
-  let now = moment();
-  //console.log(now.time())
-  switch (now.day()) {
-    case 1:
-      console.log('mon');
-      break;
-    case 2:
-      console.log('tues');
-      break;
-    case 3:
-      console.log('wed');
-      break;
-    case 4:
-      //console.log('thurs');
-      //f(now.hour()>)
-      break;
-    case 5:
-      console.log('fri');
-      break;
-    case 6:
-      console.log('sat');
-      break;
-    case 7:
-      console.log('sun');
-      break;
-    default:
-      console.log('Scheduler Error');
+  let now = moment().hour()*60 + moment().minute();
+  let day = moment().day();
+
+  let occCheck = tstat.schedule[day].map(timeSlot => {
+    let start = timeSlot[0].hour() * 60 + timeSlot[0].minute();
+    let end = timeSlot[1].hour() * 60 + timeSlot[1].minute();
+    if (now > start && now < end) {
+      return true;
+    }
+    return false;
+  });
+  if (occCheck.includes(true)) {
+    tstat.activeSetpoint = tstat.occSetpoint
   }
-  tstat.activeSetpoint = tstat.dial;
+  else {
+    tstat.activeSetpoint = tstat.unoccSetpoint
+  }
 };
 
 const heatOn = () => {
@@ -102,7 +89,7 @@ tstat.checkTemp = () => {
     tstat.activeSetpoint.toFixed(1)
   );
   if (tstat.temp < tstat.activeSetpoint - tstat.deadband / 2) heatOn();
-  if (tstat.temp > tstat.activeSetpoint + tstat.deadband / 2) ßheatOff();
+  if (tstat.temp > tstat.activeSetpoint + tstat.deadband / 2) heatOff();
 };
 
 tstat.start = () => {
