@@ -17,17 +17,20 @@ const tstat = {
   occSch: {},
   unoccSch: {},
   temp: {
-    raw: 0,
-    value: 70,
-    res1: 10000,
-    res2: 9780,
-    vref: 500,
-    celsius: 20,
+    raw: 0, //initial
+    value: 70, //initial
+    res1: 10000, //initial
+    res2: 9780, //const
+    vref: 500, //const
+    celsius: 20, //initial
     constA: 0.001314558223,
     constB: 0.0002042882966,
     constC: 0.0000002090885833,
-  }, //temp
-  dial: { raw: 0, value: 65 }, //dial
+  },
+  dial: {
+    raw: 0, //initial
+    value: 65, //initial
+  },
 };
 tstat.updateCh = () => {
   adc.ch0() //get temp

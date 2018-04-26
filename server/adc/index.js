@@ -24,8 +24,10 @@ adc.readCh = (channel) => {
         if (!adc.busy) {
             adc.readADCSingleEnded(channel, progGainAmp, samplesPerSecond, function (err, data) {
                 if (err) {
+                    //console.log('Rejected')
                     reject(err);
                 }
+                //console.log('Resolved')
                 resolve(data);
             })
         }
