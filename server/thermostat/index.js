@@ -23,7 +23,7 @@ const tstat = {
     2: [],
     3: [],
     4: [
-      [moment({ hour: 14, minute: 0 }), moment({ hour: 15, minute: 20 })],
+      [moment({ hour: 8, minute: 0 }), moment({ hour: 23, minute: 20 })],
       [moment({ hour: 15, minute: 15 }), moment({ hour: 15, minute: 55 })],
     ],
     5: [],
@@ -99,8 +99,12 @@ tstat.checkTemp = () => {
 };
 
 tstat.start = () => {
-  setInterval(tstat.updateCh, 1000);
-  setInterval(tstat.checkTemp, 100);
+  scheduler()
+  tstat.updateCh()
+  tstat.checkTemp()
+
+  setInterval(tstat.updateCh, 300);
+  setInterval(tstat.checkTemp, 800);
   setInterval(scheduler, 1000);
 };
 
