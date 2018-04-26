@@ -4,23 +4,28 @@ const { convertTemp, convertDial } = require('./converttemp');
 
 const tstat = {
   //constants
-  minOnTime: 3500, //minimum time to let the heater run, in milli seconds
-  minOffTime: 3500, //minimum time before turning heater back on, in milli seconds
-  deadband: 2, //temp must be above setpoint by half of deadband to turn off heater, and below setpoint by half of deadband to turn on
-
+  config: {
+    minOnTime: 3500, //minimum time to let the heater run, in milli seconds
+    minOffTime: 3500, //minimum time before turning heater back on, in milli seconds
+    deadband: 2, //temp must be above setpoint by half of deadband to turn off heater, and below setpoint by half of deadband to turn on
+  },
   //variables
   heat: false,
   lastOn: Date.now(),
   lastOff: Date.now() - 10000,
-  temperature: null,
-  activeSetpoint: 72,
-  occSetpoint: 70,
-  unoccSetpoint: 50,
+  setpoints: {
+    activeSetpoint: 72,
+    occSetpoint: 70,
+    unoccSetpoint: 50,
+  },
   schedule: {
     1: [],
     2: [],
     3: [],
-    4: [[moment({ hour: 14, minute: 0 }), moment({ hour: 15, minute: 20 })],[moment({ hour: 15, minute: 15 }), moment({ hour: 15, minute: 55 })]],
+    4: [
+      [moment({ hour: 14, minute: 0 }), moment({ hour: 15, minute: 20 })],
+      [moment({ hour: 15, minute: 15 }), moment({ hour: 15, minute: 55 })],
+    ],
     5: [],
     6: [],
     7: [],
@@ -46,7 +51,7 @@ tstat.updateCh = () => {
 };
 
 const scheduler = () => {
-  let now = moment().hour()*60 + moment().minute();
+  let now = moment().hour() * 60 + moment().minute();
   let day = moment().day();
 
   let occCheck = tstat.schedule[day].map(timeSlot => {
@@ -58,15 +63,14 @@ const scheduler = () => {
     return false;
   });
   if (occCheck.includes(true)) {
-    tstat.activeSetpoint = tstat.occSetpoint
-  }
-  else {
-    tstat.activeSetpoint = tstat.unoccSetpoint
+    tstat.setpoints.activeSetpoint = tstat.setpoints.occSetpoint;
+  } else {
+    tstat.setpoints.activeSetpoint = tstat.setpoints.unoccSetpoint;
   }
 };
 
 const heatOn = () => {
-  if (!tstat.heat && Date.now() > tstat.lastOff + tstat.minOffTime) {
+  if (!tstat.heat && Date.now() > tstat.lastOff + tstat.config.minOffTime) {
     console.log('Heat On');
     tstat.lastOn = Date.now();
     tstat.heat = true;
@@ -74,7 +78,7 @@ const heatOn = () => {
 };
 
 const heatOff = () => {
-  if (tstat.heat && Date.now() > tstat.lastOn + tstat.minOnTime) {
+  if (tstat.heat && Date.now() > tstat.lastOn + tstat.config.minOnTime) {
     console.log('Heat Off');
     tstat.lastOff = Date.now();
     tstat.heat = false;
@@ -86,15 +90,17 @@ tstat.checkTemp = () => {
     'Check Temp',
     tstat.temp.toFixed(1),
     'Setpoint',
-    tstat.activeSetpoint.toFixed(1)
+    tstat.setpoints.activeSetpoint.toFixed(1)
   );
-  if (tstat.temp < tstat.activeSetpoint - tstat.deadband / 2) heatOn();
-  if (tstat.temp > tstat.activeSetpoint + tstat.deadband / 2) heatOff();
+  if (tstat.temp < tstat.setpoints.activeSetpoint - tstat.config.deadband / 2)
+    heatOn();
+  if (tstat.temp > tstat.setpoints.activeSetpoint + tstat.config.deadband / 2)
+    heatOff();
 };
 
 tstat.start = () => {
   setInterval(tstat.updateCh, 1000);
-  setInterval(tstat.checkTemp, 1000);
+  setInterval(tstat.checkTemp, 100);
   setInterval(scheduler, 1000);
 };
 
