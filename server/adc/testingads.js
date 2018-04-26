@@ -11,24 +11,26 @@ ads1x15.prototype.readADCSingleEnded = (
   samplesPerSecond,
   callback
 ) => {
-  let output
+  let tstat = require('../thermostat/index');
+  let output;
   if (!this.temp || !this.dial) {
-    this.temp = 284; //intial 280 = 65
-    this.dial = 130; //intial 140 = 80
+    this.temp = 260; //intial 280 = 65
+    this.dial = 180; //intial 180 = 75
   }
   if (channel === 1) {
     //dial 233=70F
-    this.dial +=
-      chance.floating({ min: 0, max: 2 }) *
-      chance.integer({ min: -1, max: 1 });
-    output = this.dial
+    // this.dial +=
+    //   chance.floating({ min: 0, max: 2 }) * chance.integer({ min: -1, max: 1 });
+    output = this.dial;
   }
   if (channel === 0) {
     //temp 284=66F
-    this.temp +=
-      chance.floating({ min: 0, max: 2 }) *
-      chance.integer({ min: -1, max: 1 });
-    output = this.temp
+    let heat = 1;
+    if (tstat.heat) heat = -1;
+    else heat = 1;
+    this.temp += chance.floating({ min: 0, max: 1 }) * heat;
+    //chance.integer({ min: -1, max: 1 });
+    output = this.temp;
   }
   callback(null, output);
 };
