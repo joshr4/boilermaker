@@ -108,3 +108,5 @@ if (require.main === module) {
 }
 
 tstat.start() //starts main thermostat functionality
+setInterval(()=>console.log('Temp ', tstat.temp.value), 3000)
+setInterval(()=>console.log('Dial ', tstat.dial.value), 3000)

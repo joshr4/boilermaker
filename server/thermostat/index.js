@@ -19,42 +19,43 @@ const tstat = {
   temp: {
     raw: 0,
     value: 70,
-    res: 10,
+    res1: 10000,
+    res2: 9780,
+    vref: 500,
     celsius: 20,
-    constA: 0.002425308852122,
-    constB: 0.000422711863267,
-    constC: 0.000000355663515,
+    constA: 0.001314558223,
+    constB: 0.0002042882966,
+    constC: 0.0000002090885833,
   }, //temp
   dial: { raw: 0, value: 65 }, //dial
 };
-
 tstat.updateCh = () => {
   adc.ch0() //get temp
-      .then(data => {
-          tstat.temp.raw = data
-          //Steinhart - Hart Equation 1/T = A+B(LnR)+C(LnR)^3
-          tstat.temp.res = 8.19 / (5000 / data - 1)
-          tstat.temp.celsius = 1 / (tstat.temp.constA + tstat.temp.constB * Math.log(tstat.temp.res) + tstat.temp.constC * Math.pow(Math.log(tstat.temp.res), 3)) - 273.15
-          tstat.temp.value = tstat.temp.celsius * 1.8 + 32
-          console.log('Temp ', tstat.temp.value)
-          adc.ch1() //get dial
-              .then(data => {
-                  tstat.dial.raw = data;
-                  tstat.dial.value = (data - 873) / -9.28
-                  tstat.occSetpoint = tstat.dial.value
-                  console.log('Dial ', tstat.dial.value)
-              })
-              .catch(err => {
-                  throw err
-              })
-      });
-}
+    .then(data => {
+      tstat.temp.raw = data;
+      //Steinhart - Hart Equation 1/T = A+B(LnR)+C(LnR)^3
+      tstat.temp.res1 = data * tstat.temp.res2 / tstat.temp.vref / (1 - data / tstat.temp.vref);
+      tstat.temp.celsius =
+        1 /
+          (tstat.temp.constA +
+            tstat.temp.constB * Math.log(tstat.temp.res1) +
+            tstat.temp.constC * Math.pow(Math.log(tstat.temp.res1), 3)) -
+        273.15;
+      tstat.temp.value = tstat.temp.celsius * 1.8 + 32;
+      adc.ch1() //get dial
+        .then(data => {
+          tstat.dial.raw = data;
+          tstat.dial.value = (data - 873) / -9.28;
+          tstat.occSetpoint = tstat.dial.value;
+        })
+        .catch(err => {
+          throw err;
+        });
+    });
+};
 
 tstat.start = () => {
-  //console.log('Dial ', this.dial.value)
- //console.log('Temp ', this.temp.value)
-  setInterval(tstat.updateCh, 4000)
-  //setInterval(tstat.compareTemp, 4000)
-}
+  setInterval(tstat.updateCh, 4000);
+};
 
 module.exports = tstat;
