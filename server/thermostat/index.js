@@ -38,6 +38,7 @@ tstat.updateCh = () => {
   adc
     .ch0() //get temp
     .then(tempData => {
+      console.log('tempdata ', tempData)
       tstat.temp = convertTemp(tempData); //data is in centivolts
       console.log('temp ',tstat.temp)
 
@@ -106,8 +107,8 @@ tstat.start = () => {
   tstat.updateCh()
   tstat.checkTemp()
 
-  setInterval(tstat.updateCh, 300);
-  setInterval(tstat.checkTemp, 800);
+  setInterval(tstat.updateCh, 1000);
+  setInterval(tstat.checkTemp, 1000);
   setInterval(scheduler, 1000);
 };
 
