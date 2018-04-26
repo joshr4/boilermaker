@@ -1,16 +1,16 @@
 const router = require('express').Router();
-const stat = require('../stat')
+const tstat = require('../thermostat')
 
 module.exports = router;
 
 router.get('/', function (req, res, next) {
-  res.json(stat)
+  res.json(tstat)
 });
 
 router.get('/temp', function (req, res, next) {
-  res.json(stat.temp.value)
+  res.json(tstat.temp.value)
 });
 
 router.get('/dial', function (req, res, next) {
-  res.json(stat.dial.value)
+  res.json(tstat.dial.value)
 });

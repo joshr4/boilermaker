@@ -1,6 +1,8 @@
 var ads1x15
-try { ads1x15 = require('node-ads1x15') }
-catch { ads1x15 = require('./testingads') }
+//try { ads1x15 = require('node-ads1x15') }
+//catch {
+    ads1x15 = require('./testingads')
+    //}
 
 const Promise = require('bluebird')
 const chip = 1; //0 for ads1015, 1 for ads1115
@@ -23,7 +25,6 @@ adc.readCh = (channel) => {
             adc.readADCSingleEnded(channel, progGainAmp, samplesPerSecond, function (err, data) {
                 if (err) {
                     reject(err);
-                    //throw err;
                 }
                 resolve(data);
             })
