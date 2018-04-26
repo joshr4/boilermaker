@@ -7,17 +7,20 @@ const temp = {
 }
 
 const convertTemp = (raw) => { //raw is in centivolts
+  console.log('raw ', raw)
   let resistance =
     raw *
     temp.res2 /
     temp.vref /
     (1 - raw / temp.vref);
+    console.log('resist' ,resistance)
   let celsius =
     1 /
       (temp.constA +
         temp.constB * Math.log(resistance) +
         temp.constC * Math.pow(Math.log(resistance), 3)) -
     273.15;
+    console.log('celsisus ', celsius)
   return celsius * 1.8 + 32; //return farenheit
 };
 
