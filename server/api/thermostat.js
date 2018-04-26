@@ -14,3 +14,7 @@ router.get('/temp', function (req, res, next) {
 router.get('/dial', function (req, res, next) {
   res.json(tstat.dial.value)
 });
+
+router.get('/schedule', function (req, res, next) {
+  res.json(tstat.schedule)
+});

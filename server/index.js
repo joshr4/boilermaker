@@ -90,7 +90,7 @@ const createApp = () => {
 const startListening = () => {
   // start listening (and create a 'server' object representing our server)
   const server = app.listen(PORT, () =>
-    console.log(`Mixing it up on port ${PORT}`)
+    console.log(`Changing some temps on port ${PORT}`)
   );
 
   // set up our socket control center
@@ -115,5 +115,5 @@ if (require.main === module) {
 }
 
 tstat.start(); //starts main thermostat functionality
-setInterval(() => console.log('Temp ', tstat.temp.value), 3000);
-setInterval(() => console.log('Dial ', tstat.dial.value), 3000);
+//setInterval(() => console.log('Temp ', tstat.temp.value), 3000);
+//etInterval(() => console.log('Dial ', tstat.dial.value), 3000);

@@ -2,8 +2,6 @@ let Chance = require('chance');
 let chance = new Chance(1234);
 
 function ads1x15(chip) {
-  //this.temp = 284;
-  //this.dial = 240;
   this.busy = false;
 }
 
@@ -15,8 +13,8 @@ ads1x15.prototype.readADCSingleEnded = (
 ) => {
   let output
   if (!this.temp || !this.dial) {
-    this.temp = 284;
-    this.dial = 240;
+    this.temp = 284; //intial 280 = 65
+    this.dial = 130; //intial 140 = 80
   }
   if (channel === 1) {
     //dial 233=70F

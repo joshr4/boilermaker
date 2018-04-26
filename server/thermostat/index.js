@@ -1,4 +1,6 @@
 const adc = require('../adc');
+const moment = require('moment');
+const { convertTemp, convertDial } = require('./checktemp');
 
 const tstat = {
   //constants
@@ -14,42 +16,23 @@ const tstat = {
   activeSetpoint: 70,
   occSetpoint: 70,
   unoccSetpoint: 50,
-  occSch: {},
-  unoccSch: {},
-  temp: {
-    raw: 0, //initial
-    value: 70, //initial
-    res1: 10000, //initial
-    res2: 9780, //const
-    vref: 500, //const
-    celsius: 20, //initial
-    constA: 0.001314558223,
-    constB: 0.0002042882966,
-    constC: 0.0000002090885833,
+  schedule: {
+    unoccSch: {},
+    occSch: {},
   },
-  dial: {
-    raw: 0, //initial
-    value: 65, //initial
-  },
+  temp: 65, //initial
+  dial: 80, //initial
 };
+
 tstat.updateCh = () => {
-  adc.ch0() //get temp
+  adc
+    .ch0() //get temp
     .then(data => {
-      tstat.temp.raw = data;
-      //Steinhart - Hart Equation 1/T = A+B(LnR)+C(LnR)^3
-      tstat.temp.res1 = data * tstat.temp.res2 / tstat.temp.vref / (1 - data / tstat.temp.vref);
-      tstat.temp.celsius =
-        1 /
-          (tstat.temp.constA +
-            tstat.temp.constB * Math.log(tstat.temp.res1) +
-            tstat.temp.constC * Math.pow(Math.log(tstat.temp.res1), 3)) -
-        273.15;
-      tstat.temp.value = tstat.temp.celsius * 1.8 + 32;
-      adc.ch1() //get dial
+      tstat.temp = convertTemp(data); //data is in centivolts
+      adc
+        .ch1() //get dial
         .then(data => {
-          tstat.dial.raw = data;
-          tstat.dial.value = (data - 873) / -9.28;
-          tstat.occSetpoint = tstat.dial.value;
+          tstat.dial = convertDial(data);
         })
         .catch(err => {
           throw err;
@@ -57,8 +40,19 @@ tstat.updateCh = () => {
     });
 };
 
+tstat.checkTemp = () => {
+  console.log(
+    'Check Temp',
+    tstat.temp.toFixed(1),
+    'Setpoint',
+    tstat.dial.toFixed(1)
+  );
+  //console.log('Dial ', tstat.dial.value)
+};
+
 tstat.start = () => {
   setInterval(tstat.updateCh, 4000);
+  setInterval(tstat.checkTemp, 4000);
 };
 
 module.exports = tstat;
