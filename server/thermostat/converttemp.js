@@ -1,6 +1,6 @@
 const temp = {
   res2: 9780, //static resistor value in voltage divider
-  vref: 500, //voltage reference for voltage divider - 500 centivolts
+  vref: 5000, //voltage reference for voltage divider - 500 centivolts
   constA: 0.001314558223,
   constB: 0.0002042882966,
   constC: 0.0000002090885833,
