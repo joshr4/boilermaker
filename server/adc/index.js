@@ -1,6 +1,7 @@
 var ads1x15;
 try {
   ads1x15 = require('node-ads1x15');
+  console.log('ADS Good!')
 } catch (e) {
     ads1x15 = require('./testingads')
     console.log('Faild to require ADS library, reverting to a simulated dummy function')
@@ -29,10 +30,10 @@ adc.readCh = channel => {
         data
       ) {
         if (err) {
-          //console.log('Rejected')
+          console.log('Rejected',err)
           reject(err);
         }
-        //console.log('Resolved')
+        console.log('Resolved', data)
         resolve(data);
       });
     }
