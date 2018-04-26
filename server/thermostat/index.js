@@ -17,14 +17,15 @@ const tstat = {
     activeSetpoint: 72,
     occSetpoint: 70,
     unoccSetpoint: 50,
+    occupied: true,
   },
   schedule: {
     1: [],
     2: [],
     3: [],
     4: [
-      [moment({ hour: 8, minute: 0 }), moment({ hour: 23, minute: 20 })],
-      [moment({ hour: 15, minute: 15 }), moment({ hour: 15, minute: 55 })],
+      [moment({ hour: 8, minute: 0 }), moment({ hour: 18, minute: 34 })],
+      [moment({ hour: 18, minute: 35 }), moment({ hour: 19, minute: 55 })],
     ],
     5: [],
     6: [],
@@ -64,9 +65,15 @@ const scheduler = () => {
     return false;
   });
   if (occCheck.includes(true)) {
-    tstat.setpoints.activeSetpoint = tstat.setpoints.occSetpoint;
-  } else {
+    if (!tstat.setpoints.occupied) {
+      console.log('Occupied')
+      tstat.setpoints.activeSetpoint = tstat.setpoints.occSetpoint;
+      tstat.setpoints.occupied = true;
+    }
+  } else if (tstat.setpoints.occupied) {
+    console.log('Unoccupied')
     tstat.setpoints.activeSetpoint = tstat.setpoints.unoccSetpoint;
+    tstat.setpoints.occupied = false;
   }
 };
 
@@ -100,9 +107,9 @@ tstat.checkTemp = () => {
 };
 
 tstat.start = () => {
-  scheduler()
-  tstat.updateCh()
-  tstat.checkTemp()
+  scheduler();
+  tstat.updateCh();
+  tstat.checkTemp();
 
   setInterval(tstat.updateCh, 1000);
   setInterval(tstat.checkTemp, 1000);
