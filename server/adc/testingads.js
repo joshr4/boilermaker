@@ -18,17 +18,15 @@ ads1x15.prototype.readADCSingleEnded = (
     this.dial = 180; //intial 180 = 75
   }
   if (channel === 1) {
-    //dial 233=70F
-    // this.dial +=
-    //   chance.floating({ min: 0, max: 2 }) * chance.integer({ min: -1, max: 1 });
+    this.dial +=
+      chance.floating({ min: 0, max: 1 }) * chance.integer({ min: -1, max: 1 });
     output = this.dial;
   }
   if (channel === 0) {
-    //temp 284=66F
     let heat = 1;
     if (tstat.heat) heat = -1;
-    else heat = 1;
-    this.temp += chance.floating({ min: 0, max: 1 }) * heat;
+    else heat = 0.3;
+    this.temp += chance.floating({ min: 1, max: 4 }) * heat;
     //chance.integer({ min: -1, max: 1 });
     output = this.temp;
   }
