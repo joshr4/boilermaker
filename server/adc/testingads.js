@@ -14,7 +14,7 @@ ads1x15.prototype.readADCSingleEnded = (
   let tstat = require('../thermostat/index');
   let output;
   if (!this.temp || !this.dial) {
-    this.temp = 260; //intial 280 = 65
+    this.temp = 2600; //intial 280 = 65
     this.dial = 180; //intial 180 = 75
   }
   if (channel === 1) {

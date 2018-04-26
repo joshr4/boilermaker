@@ -30,10 +30,8 @@ adc.readCh = channel => {
         data
       ) {
         if (err) {
-          console.log('Rejected',err)
           reject(err);
         }
-        console.log('Resolved', data)
         resolve(data);
       });
     }

@@ -38,15 +38,12 @@ tstat.updateCh = () => {
   adc
     .ch0() //get temp
     .then(tempData => {
-      console.log('tempdata ', tempData)
       tstat.temp = convertTemp(tempData); //data is in centivolts
-      console.log('temp ',tstat.temp)
 
       adc
         .ch1() //get dial
         .then(dialData => {
           tstat.dial = convertDial(dialData);
-          console.log('Dial ',tstat.dial)
         })
         .catch(err => {
           throw err;
