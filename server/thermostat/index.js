@@ -18,6 +18,8 @@ const tstat = {
     occSetpoint: 70,
     unoccSetpoint: 50,
     occupied: true,
+    tempOcc: Date.now(),
+    dialLastAdjust: Date.now() - 10000,
   },
   schedule: {
     1: [],
@@ -33,6 +35,7 @@ const tstat = {
   },
   temp: 73, //initial
   dial: 74.7, //initial
+  lastDial: 74.7,
 };
 
 tstat.updateCh = () => {
@@ -44,7 +47,9 @@ tstat.updateCh = () => {
       adc
         .ch1() //get dial
         .then(dialData => {
+          console.log('dial ',dialData)
           tstat.dial = convertDial(dialData);
+          console.log('dialconv ',tstat.dial)
         })
         .catch(err => {
           throw err;
@@ -106,11 +111,24 @@ tstat.checkTemp = () => {
     heatOff();
 };
 
+tstat.dialMonitor = () => {
+  let changed = Math.abs(tstat.lastDial - tstat.dial)
+
+  if(changed > 2) {
+    tstat.setpoints.tempOcc = Date.now()
+    tstat.setpoints.occupied = true
+    tstat.setpoints.activeSetpoint = tstat.dial
+  }
+
+  tstat.setpoints.activeSetpoint = tstat.dial
+  let lastDial = tstat.dial;
+};
+
 tstat.start = () => {
   scheduler();
   tstat.updateCh();
   tstat.checkTemp();
-
+  setInterval(tstat.dialMonitor, 1000);
   setInterval(tstat.updateCh, 1000);
   setInterval(tstat.checkTemp, 1000);
   setInterval(scheduler, 1000);

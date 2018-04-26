@@ -1,12 +1,12 @@
 const temp = {
   res2: 9780, //static resistor value in voltage divider
-  vref: 5000, //voltage reference for voltage divider - 500 centivolts
+  vref: 5000, //voltage reference for voltage divider - 5000 millivolts
   constA: 0.001314558223,
   constB: 0.0002042882966,
   constC: 0.0000002090885833,
 }
 
-const convertTemp = (raw) => { //raw is in centivolts
+const convertTemp = (raw) => { //raw is in millivolts
   let resistance =
     raw *
     temp.res2 /
@@ -21,7 +21,7 @@ const convertTemp = (raw) => { //raw is in centivolts
   return celsius * 1.8 + 32; //return farenheit
 };
 
-const convertDial = (raw) => { //raw is in centivolts
+const convertDial = (raw) => { //raw is in millivolts
   return (raw - 873) / -9.28;
 };
 
