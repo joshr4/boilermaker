@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {Login, Signup, UserHome, Thermostat, Schedule, Settings} from './components'
-import {me, getThermostat} from './store'
+import {me, getThermostat, setSetpoints, setConfig, setSchedule} from './store'
 
 /**
  * COMPONENT
@@ -51,9 +51,19 @@ const mapState = (state) => {
 }
 
 const mapDispatch = (dispatch) => {
+  let schedule = {
+    1: [[{ hour: 8, minute: 0 }, { hour: 19, minute: 40 }]],
+    2: [],
+    3: [],
+    4: [[{ hour: 8, minute: 0 }, { hour: 19, minute: 40 }]],
+    5: [],
+    6: [],
+    7: [[{ hour: 8, minute: 0 }, { hour: 19, minute: 40 }]],
+  }
   return {
     loadInitialData () {
       dispatch(getThermostat())
+      dispatch(setSchedule(schedule))
     }
   }
 }
