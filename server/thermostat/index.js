@@ -26,7 +26,7 @@ const tstat = {
     2: [],
     3: [],
     4: [
-      [moment({ hour: 8, minute: 0 }), moment({ hour: 19, minute: 10 })],
+      [moment({ hour: 8, minute: 0 }), moment({ hour: 19, minute: 20 })],
     ],
     5: [],
     6: [],
