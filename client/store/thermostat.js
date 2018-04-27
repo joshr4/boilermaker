@@ -25,7 +25,7 @@ export const getThermostat = () =>
   dispatch =>
     axios.get('/api/')
       .then(res =>
-        dispatch(getTstat(res.data || defaultUser)))
+        dispatch(getTstat(res.data || defaultStat)))
       .catch(err => console.log(err))
 
 export const auth = (email, password, method) =>
