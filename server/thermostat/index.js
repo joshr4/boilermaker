@@ -70,7 +70,7 @@ const scheduler = () => {
   });
   console.log('array ',occCheck)
   console.log(now, day)
-  console.log('set.occ ', tstat.setpoints.occupied)
+  console.log('set.occ before', tstat.setpoints.occupied)
   if (occCheck.includes(true)) {
     if (!tstat.setpoints.occupied) {
       console.log('Occupied');
@@ -81,6 +81,8 @@ const scheduler = () => {
     console.log('Unoccupied1');
     tstat.setpoints.activeSetpoint = tstat.setpoints.unoccSetpoint;
     tstat.setpoints.occupied = false;
+    console.log('set.occ after', tstat.setpoints.occupied)
+
   }
 };
 
@@ -116,10 +118,10 @@ tstat.checkTemp = () => {
 tstat.dialMonitor = () => {
   let changed = Math.abs(tstat.lastDial - tstat.dial);
 
-  if (changed > 2) {
+  if (changed > 1) {
     tstat.setpoints.tempOcc = Date.now();
-    tstat.setpoints.occupied = true;
-    tstat.setpoints.activeSetpoint = tstat.dial;
+    //tstat.setpoints.occupied = true;
+    //tstat.setpoints.activeSetpoint = tstat.dial;
   }
 
   tstat.setpoints.activeSetpoint = tstat.dial;
