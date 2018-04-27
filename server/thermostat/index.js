@@ -40,12 +40,12 @@ tstat.updateCh = () => {
   adc
     .ch0() //get temp
     .then(tempData => {
-      tstat.temp = convertTemp(tempData); //data is in centivolts
+      tstat.temp = convertTemp(tempData).toFixed(2); //data is in centivolts
 
       adc
         .ch1() //get dial
         .then(dialData => {
-          tstat.dial = convertDial(dialData);
+          tstat.dial = convertDial(dialData).toFixed(2);
         })
         .catch(err => {
           throw err;
@@ -99,9 +99,9 @@ const heatOff = () => {
 tstat.checkTemp = () => {
   console.log(
     'Check Temp',
-    tstat.temp.toFixed(1),
+    tstat.temp,
     'Setpoint',
-    tstat.setpoints.activeSetpoint.toFixed(1)
+    tstat.setpoints.activeSetpoint
   );
   if (tstat.temp < tstat.setpoints.activeSetpoint - tstat.config.deadband / 2)
     heatOn();
