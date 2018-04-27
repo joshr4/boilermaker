@@ -26,8 +26,7 @@ const tstat = {
     2: [],
     3: [],
     4: [
-      [moment({ hour: 8, minute: 0 }), moment({ hour: 18, minute: 34 })],
-      [moment({ hour: 18, minute: 35 }), moment({ hour: 19, minute: 1 })],
+      [moment({ hour: 8, minute: 0 }), moment({ hour: 19, minute: 10 })],
     ],
     5: [],
     6: [],
@@ -63,10 +62,13 @@ const scheduler = () => {
     let start = timeSlot[0].hour() * 60 + timeSlot[0].minute();
     let end = timeSlot[1].hour() * 60 + timeSlot[1].minute();
     if (now > start && now < end) {
+      console.log('occ check true')
       return true;
     }
+    console.log('occ check false')
     return false;
   });
+  console.log('set.occ ', tstat.setpoints.occupied)
   if (occCheck.includes(true)) {
     if (!tstat.setpoints.occupied) {
       console.log('Occupied');
@@ -74,7 +76,7 @@ const scheduler = () => {
       tstat.setpoints.occupied = true;
     }
   } else if (tstat.setpoints.occupied) {
-    console.log('Unoccupied');
+    console.log('Unoccupied1');
     tstat.setpoints.activeSetpoint = tstat.setpoints.unoccSetpoint;
     tstat.setpoints.occupied = false;
   }
