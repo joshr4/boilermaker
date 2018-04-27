@@ -68,6 +68,8 @@ const scheduler = () => {
     console.log('occ check false')
     return false;
   });
+  console.log('array ',occCheck)
+  console.log(now, day)
   console.log('set.occ ', tstat.setpoints.occupied)
   if (occCheck.includes(true)) {
     if (!tstat.setpoints.occupied) {
