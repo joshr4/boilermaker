@@ -27,7 +27,7 @@ const tstat = {
     3: [],
     4: [
       [moment({ hour: 8, minute: 0 }), moment({ hour: 18, minute: 34 })],
-      [moment({ hour: 18, minute: 35 }), moment({ hour: 19, minute: 55 })],
+      [moment({ hour: 18, minute: 35 }), moment({ hour: 19, minute: 1 })],
     ],
     5: [],
     6: [],
@@ -69,12 +69,12 @@ const scheduler = () => {
   });
   if (occCheck.includes(true)) {
     if (!tstat.setpoints.occupied) {
-      console.log('Occupied')
+      console.log('Occupied');
       tstat.setpoints.activeSetpoint = tstat.setpoints.occSetpoint;
       tstat.setpoints.occupied = true;
     }
   } else if (tstat.setpoints.occupied) {
-    console.log('Unoccupied')
+    console.log('Unoccupied');
     tstat.setpoints.activeSetpoint = tstat.setpoints.unoccSetpoint;
     tstat.setpoints.occupied = false;
   }
@@ -110,15 +110,15 @@ tstat.checkTemp = () => {
 };
 
 tstat.dialMonitor = () => {
-  let changed = Math.abs(tstat.lastDial - tstat.dial)
+  let changed = Math.abs(tstat.lastDial - tstat.dial);
 
-  if(changed > 2) {
-    tstat.setpoints.tempOcc = Date.now()
-    tstat.setpoints.occupied = true
-    tstat.setpoints.activeSetpoint = tstat.dial
+  if (changed > 2) {
+    tstat.setpoints.tempOcc = Date.now();
+    tstat.setpoints.occupied = true;
+    tstat.setpoints.activeSetpoint = tstat.dial;
   }
 
-  tstat.setpoints.activeSetpoint = tstat.dial
+  tstat.setpoints.activeSetpoint = tstat.dial;
   let lastDial = tstat.dial;
 };
 
