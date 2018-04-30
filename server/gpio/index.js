@@ -10,7 +10,7 @@ function write() {
 }
 
 function writeOff() {
-  gpio.write(7, true, function(err) {
+  gpio.write(7, false, function(err) {
       if (err) throw err;
       console.log('Written to pin');
   });
