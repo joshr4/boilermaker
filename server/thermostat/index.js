@@ -11,10 +11,10 @@ try {
   console.log('Failed to load GPIO library');
 }
 
-if (gpio) gpio.setup(4, gpio.DIR_OUT, write);
+if (gpio) gpio.setup(7, gpio.DIR_OUT, write);
 
 function write() {
-  gpio.write(4, true, function(err) {
+  gpio.write(7, true, function(err) {
     if (err) throw err;
     console.log('Written to pin');
   });
