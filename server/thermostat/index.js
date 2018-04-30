@@ -56,8 +56,6 @@ tstat.updateCh = () => {
 const scheduler = () => {
   let now = moment().hour() * 60 + moment().minute();
   let day = moment().day();
-  console.log('day', day)
-  console.log('sunday' ,typeof tstat.schedule[0])
   let occCheck = tstat.schedule[day].map(timeSlot => {
     let start = timeSlot.start.hour() * 60 + timeSlot.start.minute();
     let end = timeSlot.end.hour() * 60 + timeSlot.end.minute();
@@ -114,7 +112,6 @@ tstat.checkTemp = () => {
 
 tstat.dialMonitor = () => {
   let changed = Math.abs(tstat.lastDial - tstat.dial);
-  console.log('dial change val', changed);
   if (changed > 0.75) {
     tstat.setpoints.tempOcc = Date.now();
     tstat.setpoints.tempOccActive = true;
@@ -129,7 +126,7 @@ tstat.start = () => {
   scheduler();
   tstat.updateCh();
   tstat.checkTemp();
-  setInterval(tstat.dialMonitor, 3000);
+  setInterval(tstat.dialMonitor, 1000);
   setInterval(tstat.updateCh, 1000);
   setInterval(tstat.checkTemp, 1000);
   setInterval(scheduler, 1000);
