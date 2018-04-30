@@ -23,13 +23,13 @@ const tstat = {
     dialLastAdjust: Date.now() - 10000,
   },
   schedule: {
-    1: [],
-    2: [],
-    3: [],
-    4: [[moment({ hour: 8, minute: 0 }), moment({ hour: 19, minute: 40 })]],
-    5: [],
-    6: [],
-    7: [],
+    1: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
+    2: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
+    3: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
+    4: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
+    5: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
+    6: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
+    0: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
   },
   temp: 73, //initial
   dial: 74.7, //initial
@@ -56,9 +56,11 @@ tstat.updateCh = () => {
 const scheduler = () => {
   let now = moment().hour() * 60 + moment().minute();
   let day = moment().day();
+  console.log('day', day)
+  console.log('sunday' ,typeof tstat.schedule[0])
   let occCheck = tstat.schedule[day].map(timeSlot => {
-    let start = timeSlot[0].hour() * 60 + timeSlot[0].minute();
-    let end = timeSlot[1].hour() * 60 + timeSlot[1].minute();
+    let start = timeSlot.start.hour() * 60 + timeSlot.start.minute();
+    let end = timeSlot.end.hour() * 60 + timeSlot.end.minute();
     if (now > start && now < end) {
       return true;
     }
@@ -75,7 +77,10 @@ const scheduler = () => {
     tstat.setpoints.activeSetpoint = tstat.setpoints.unoccSetpoint;
     tstat.setpoints.occupied = false;
   }
-  if (!tstat.setpoints.tempOccActive&&Date.now() < tstat.setpoints.tempOcc + tstat.setpoints.tempOccTime) {
+  if (
+    !tstat.setpoints.tempOccActive &&
+    Date.now() < tstat.setpoints.tempOcc + tstat.setpoints.tempOccTime
+  ) {
     tstat.setpoints.activeSetpoint = tstat.dial;
   }
 };
@@ -103,10 +108,8 @@ tstat.checkTemp = () => {
     'Setpoint',
     tstat.setpoints.activeSetpoint
   );
-  if (tstat.temp < tstat.setpoints.activeSetpoint - tstat.config.deadband / 2)
-    heatOn();
-  if (tstat.temp > tstat.setpoints.activeSetpoint + tstat.config.deadband / 2)
-    heatOff();
+  if (tstat.temp < tstat.setpoints.activeSetpoint - tstat.config.deadband / 2) heatOn();
+  if (tstat.temp > tstat.setpoints.activeSetpoint + tstat.config.deadband / 2) heatOff();
 };
 
 tstat.dialMonitor = () => {
