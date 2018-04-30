@@ -111,7 +111,7 @@ const scheduler = () => {
 const heatOn = () => {
   if (!tstat.heat && Date.now() > tstat.lastOff + tstat.config.minOffTime) {
     console.log('Heat On');
-    if (gpio) setTimeout(write, 10);
+    //if (gpio) setTimeout(write, 10);
     tstat.lastOn = Date.now();
     tstat.heat = true;
   }
@@ -120,7 +120,7 @@ const heatOn = () => {
 const heatOff = () => {
   if (tstat.heat && Date.now() > tstat.lastOn + tstat.config.minOnTime) {
     console.log('Heat Off');
-    if (gpio) setTimeout(writeOff, 10);
+    //if (gpio) setTimeout(writeOff, 10);
     tstat.lastOff = Date.now();
     tstat.heat = false;
   }
