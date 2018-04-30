@@ -52,13 +52,13 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   let schedule = {
-    1: [[{ hour: 8, minute: 0 }, { hour: 19, minute: 40 }]],
-    2: [],
-    3: [],
-    4: [[{ hour: 8, minute: 0 }, { hour: 19, minute: 40 }]],
-    5: [],
-    6: [],
-    7: [[{ hour: 8, minute: 0 }, { hour: 19, minute: 40 }]],
+    1: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    2: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    3: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    4: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    5: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    6: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    0: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
   }
   return {
     loadInitialData () {

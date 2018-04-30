@@ -23,13 +23,13 @@ const tstat = {
     dialLastAdjust: Date.now() - 10000,
   },
   schedule: {
-    1: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
-    2: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
-    3: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
-    4: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
-    5: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
-    6: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
-    0: [{start: moment({ hour: 8, minute: 0 }), end: moment({ hour: 19, minute: 40 })}],
+    1: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    2: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    3: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    4: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    5: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    6: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    0: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
   },
   temp: 73, //initial
   dial: 74.7, //initial
@@ -57,8 +57,8 @@ const scheduler = () => {
   let now = moment().hour() * 60 + moment().minute();
   let day = moment().day();
   let occCheck = tstat.schedule[day].map(timeSlot => {
-    let start = timeSlot.start.hour() * 60 + timeSlot.start.minute();
-    let end = timeSlot.end.hour() * 60 + timeSlot.end.minute();
+    let start = timeSlot.start.hour * 60 + timeSlot.start.minute;
+    let end = timeSlot.end.hour * 60 + timeSlot.end.minute;
     if (now > start && now < end) {
       return true;
     }
