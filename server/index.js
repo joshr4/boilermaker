@@ -6,8 +6,8 @@ const compression = require('compression');
 const session = require('express-session');
 const passport = require('passport');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const db = require('./db');
-const sessionStore = new SequelizeStore({ db });
+//const db = require('./db');
+//const sessionStore = new SequelizeStore({ db });
 const PORT = process.env.PORT || 8080;
 const app = express();
 const socketio = require('socket.io');
@@ -45,16 +45,16 @@ const createApp = () => {
   app.use(compression());
 
   // session middleware with passport
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || 'my best friend is Cody',
-      store: sessionStore,
-      resave: false,
-      saveUninitialized: false,
-    })
-  );
-  app.use(passport.initialize());
-  app.use(passport.session());
+  // app.use(
+  //   session({
+  //     secret: process.env.SESSION_SECRET || 'my best friend is Cody',
+  //     store: sessionStore,
+  //     resave: false,
+  //     saveUninitialized: false,
+  //   })
+  // );
+  // app.use(passport.initialize());
+  // app.use(passport.session());
 
   // auth and api routes
   app.use('/auth', require('./auth'));
@@ -105,11 +105,13 @@ const syncDb = () => db.sync();
 // It will evaluate false when this module is required by another module - for example,
 // if we wanted to require our app in a test spec
 if (require.main === module) {
-  sessionStore
-    .sync()
-    .then(syncDb)
-    .then(createApp)
-    .then(startListening);
+  // sessionStore
+  //   .sync()
+  //   .then(syncDb)
+  //   .then(
+    createApp()
+   // .then(
+      startListening();
 } else {
   createApp();
 }

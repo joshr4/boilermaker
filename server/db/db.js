@@ -10,7 +10,7 @@ const port = 5432; //default is 5432
 
 try {
   db = new Sequelize(
-    process.env.DATABASE_URL || `postgres://192.168.8.185:${port}/${databaseName}`,
+    process.env.DATABASE_URL || `postgres://localhost:${port}/${databaseName}`,
     {
       logging: false,
     }
