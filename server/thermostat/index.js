@@ -13,19 +13,19 @@ try {
 
 if (gpio) gpio.setup(4, gpio.DIR_OUT, write);
 
-function write() {
-  gpio.write(4, true, function(err) {
-    if (err) throw err;
-    console.log('Written to pin');
-  });
-}
+// function write() {
+//   gpio.write(4, true, function(err) {
+//     if (err) throw err;
+//     console.log('Written to pin');
+//   });
+// }
 
-function writeOff() {
-  gpio.write(4, false, function(err) {
-    if (err) throw err;
-    console.log('Written to pin');
-  });
-}
+// function writeOff() {
+//   gpio.write(4, false, function(err) {
+//     if (err) throw err;
+//     console.log('Written to pin');
+//   });
+// }
 
 const tstat = {
   //constants
@@ -111,7 +111,7 @@ const scheduler = () => {
 const heatOn = () => {
   if (!tstat.heat && Date.now() > tstat.lastOff + tstat.config.minOffTime) {
     console.log('Heat On');
-    if(gpio) write()
+    if(gpio) gpio.write(4, true)
     tstat.lastOn = Date.now();
     tstat.heat = true;
   }
@@ -120,7 +120,7 @@ const heatOn = () => {
 const heatOff = () => {
   if (tstat.heat && Date.now() > tstat.lastOn + tstat.config.minOnTime) {
     console.log('Heat Off');
-    if(gpio) writeOff()
+    if(gpio) gpio.write(4, false)
     tstat.lastOff = Date.now();
     tstat.heat = false;
   }
