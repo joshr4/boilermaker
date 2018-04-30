@@ -1,19 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {getThermostat} from './index'
+import {getThermostat} from '../store/'
 
 /**
  * COMPONENT
  */
 
-export const Thermostat = (props) => {
-  const { temp, updateClick } = props;
-  console.log('props',props)
+export const Thermostat = props => {
+  console.log('tstat ', props)
+  const { tstat } = props;
   return (
     <div>
-      <h2>{temp}70°</h2><button onClick={() => updateClick()} className="ui button">Update</button>
-      <p>Setpoint is 74°</p>
+      <h2>{tstat.temp}°</h2><button className="ui button">Update</button>
+      <p>Setpoint is {tstat.dial}°</p>
       <div className="ui action input">
         <input type="text" placeholder="Enter new setpoint" />
         <button className="ui button">Save</button>
@@ -29,10 +28,10 @@ export const Thermostat = (props) => {
  */
 const mapState = (state) => {
   return {
-    //email: state.user.email
-    temp: 70
-  };
-};
+    tstat: state.thermostat
+  }
+}
+
 
 const mapDispatch = dispatch => {
   return {
@@ -43,11 +42,3 @@ const mapDispatch = dispatch => {
 };
 
 export default connect(mapState, mapDispatch)(Thermostat);
-
-/**
- * PROP TYPES
- */
-Thermostat.propTypes = {
-  //email: PropTypes.string
-  temp: PropTypes.number,
-};

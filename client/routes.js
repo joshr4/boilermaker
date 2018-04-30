@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, Thermostat, Schedule, Settings} from './components'
+import {Login, Signup, UserHome, Schedule, Settings} from './components'
+import Thermostat from './components/thermostat'
 import {me, getThermostat, setSetpoints, setConfig, setSchedule} from './store'
 
 /**
@@ -15,7 +16,7 @@ class Routes extends Component {
 
   render () {
     const {isLoggedIn} = this.props
-
+    console.log('router', this.props.tstat)
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
@@ -46,24 +47,15 @@ const mapState = (state) => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    tstat: state.thermostat
   }
 }
 
 const mapDispatch = (dispatch) => {
-  let schedule = {
-    1: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-    2: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-    3: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-    4: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-    5: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-    6: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-    0: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-  }
   return {
     loadInitialData () {
       dispatch(getThermostat())
-      dispatch(setSchedule(schedule))
     }
   }
 }

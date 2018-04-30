@@ -11,7 +11,7 @@ export const Schedule = (props) => {
   return (
     <div>
       <h3>Schedule</h3>
-      <p>adfasfasdfasdf</p>
+      <p>Show schedules here</p>
     </div>
   )
 }
