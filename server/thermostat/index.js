@@ -1,6 +1,31 @@
 const adc = require('../adc');
 const moment = require('moment');
 const { convertTemp, convertDial } = require('./converttemp');
+let gpio;
+try {
+  gpio = require('rpi-gpio');
+  console.log('GPIO library loaded');
+} catch (error) {
+  gpio = false;
+  console.log(error);
+  console.log('Failed to load GPIO library');
+}
+
+if (gpio) gpio.setup(4, gpio.DIR_OUT, write);
+
+function write() {
+  gpio.write(4, true, function(err) {
+    if (err) throw err;
+    console.log('Written to pin');
+  });
+}
+
+function writeOff() {
+  gpio.write(4, false, function(err) {
+    if (err) throw err;
+    console.log('Written to pin');
+  });
+}
 
 const tstat = {
   //constants
@@ -23,13 +48,13 @@ const tstat = {
     dialLastAdjust: Date.now() - 10000,
   },
   schedule: {
-    1: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-    2: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-    3: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-    4: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-    5: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-    6: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
-    0: [{start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 }}],
+    1: [{ start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 } }],
+    2: [{ start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 } }],
+    3: [{ start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 } }],
+    4: [{ start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 } }],
+    5: [{ start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 } }],
+    6: [{ start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 } }],
+    0: [{ start: { hour: 8, minute: 0 }, end: { hour: 19, minute: 40 } }],
   },
   temp: 73, //initial
   dial: 74.7, //initial
@@ -86,6 +111,7 @@ const scheduler = () => {
 const heatOn = () => {
   if (!tstat.heat && Date.now() > tstat.lastOff + tstat.config.minOffTime) {
     console.log('Heat On');
+    if(gpio) write()
     tstat.lastOn = Date.now();
     tstat.heat = true;
   }
@@ -94,6 +120,7 @@ const heatOn = () => {
 const heatOff = () => {
   if (tstat.heat && Date.now() > tstat.lastOn + tstat.config.minOnTime) {
     console.log('Heat Off');
+    if(gpio) writeOff()
     tstat.lastOff = Date.now();
     tstat.heat = false;
   }
@@ -106,8 +133,10 @@ tstat.checkTemp = () => {
     'Setpoint',
     tstat.setpoints.activeSetpoint
   );
-  if (tstat.temp < tstat.setpoints.activeSetpoint - tstat.config.deadband / 2) heatOn();
-  if (tstat.temp > tstat.setpoints.activeSetpoint + tstat.config.deadband / 2) heatOff();
+  if (tstat.temp < tstat.setpoints.activeSetpoint - tstat.config.deadband / 2)
+    heatOn();
+  if (tstat.temp > tstat.setpoints.activeSetpoint + tstat.config.deadband / 2)
+    heatOff();
 };
 
 tstat.dialMonitor = () => {
