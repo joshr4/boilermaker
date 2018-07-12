@@ -33,10 +33,11 @@ if (!process.env.NEST_CLIENT_ID || !process.env.NEST_CLIENT_SECRET) {
   // }
 
   const strategy = new NestStrategy({
-    clientID: process.env.NEST_ID,
-    clientSecret: process.env.NEST_SECRET,
+    clientID: '07948a22-e348-403c-a29e-002e040fd33f',
+    //process.env.NEST_ID,
+    clientSecret: 'LienDQl54l1bxVjnW8VfcznDd', //process.env.NEST_SECRET,
     tokenURL: 'https://api.home.testc.nestlabs.com/oauth2/access_token',
-    authorizationURL: 'https://home.testc.nestlabs.com/login/oauth2'
+    authorizationURL: 'https://home.nest.com/login/oauth2?client_id=07948a22-e348-403c-a29e-002e040fd33f&state=STATE'
   })
 
   passport.use(strategy)
