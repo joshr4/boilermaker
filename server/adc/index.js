@@ -4,7 +4,7 @@ try {
   console.log('ADS Good!')
 } catch (e) {
     ads1x15 = require('./testingads')
-    console.log('Faild to require ADS library, reverting to a simulated dummy function')
+    console.log('Failed to require ADS library, reverting to a simulated dummy function')
 }
 
 const Promise = require('bluebird');

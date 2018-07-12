@@ -6,7 +6,7 @@ const temp = {
   constC: 0.0000002090885833,
 }
 
-const convertTemp = (raw) => { //raw is in millivolts
+const convertTemp = raw => { //raw is in millivolts
   let resistance =
     raw *
     temp.res2 /
@@ -21,7 +21,7 @@ const convertTemp = (raw) => { //raw is in millivolts
   return celsius * 1.8 + 32; //return farenheit
 };
 
-const convertDial = (raw) => { //raw is in millivolts
+const convertDial = raw => { //raw is in millivolts
   return (raw - 873) / -9.28;
 };
 

@@ -2,12 +2,13 @@ const adc = require('../adc');
 const moment = require('moment');
 const { convertTemp, convertDial } = require('./converttemp');
 let gpio;
+
 try {
   gpio = require('rpi-gpio');
   console.log('GPIO library loaded');
 } catch (error) {
   gpio = false;
-  console.log(error);
+  //console.log(error);
   console.log('Failed to load GPIO library');
 }
 
